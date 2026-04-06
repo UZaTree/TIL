@@ -98,3 +98,19 @@ int[] arr = Arrays.stream(br.readLine().split(" "))
 "1,2,,".split(",");  // ["1", "2"]      뒤쪽 빈값은 자동 제거
 "1.2.3".split(".");  // []              틀림! .은 정규식에서 '모든 문자'
 ```
+
+---
+
+## 토큰 역순 정렬
+
+### 입력 순서 뒤집기
+```java
+List<String> list = new ArrayList<>(Arrays.asList(input.split(" ")));
+Collections.reverse(list);
+```
+
+### 문자열 자체를 뒤집기
+```java
+String token = st.nextToken();
+String reversed = new StringBuilder(token).reverse().toString();
+```
