@@ -13,6 +13,7 @@
 | [배열 제어](./java/array.md) | Swap, Reverse, 인덱스 매핑 |
 | [자료형 & 연산](./java/type-and-operation.md) | double, int/long, 나머지 연산, 제곱, 진법 변환 |
 | [문자 처리](./java/char-and-string.md) | 아스키코드, Character 메서드, char 변환 |
+| [제어문](./java/control-flow.md) | switch, while(true) + break |
 | [주의사항](./java/troubleshooting.md) | 자주 하는 실수 모음 |
 
 ### 🧮 Algorithm
