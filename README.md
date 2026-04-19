@@ -16,6 +16,11 @@
 | [제어문](./java/control-flow.md) | switch, while(true) + break |
 | [주의사항](./java/troubleshooting.md) | 자주 하는 실수 모음 |
 
+### 🗄️ SQL
+| 파일 | 내용 |
+|------|------|
+| [데이터 타입](./sql/data-types.md) | 문자형, 숫자형, 날짜형, CHAR vs VARCHAR |
+
 ### 🧮 Algorithm
 > 추후 추가 예정
 
