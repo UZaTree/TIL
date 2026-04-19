@@ -25,6 +25,7 @@
 | [집계 함수](./sql/aggregate-functions.md) | MAX / MIN / AVG / SUM / COUNT, AS, DISTINCT, LIMIT |
 | [컬럼 연산](./sql/column-operations.md) | 숫자 사칙연산, 컬럼끼리 연산 |
 | [문자 함수](./sql/string-functions.md) | CONCAT, TRIM, REPLACE, SUBSTR, INSERT |
+| [숫자 함수](./sql/numeric-functions.md) | GREATEST / LEAST, FLOOR / CEIL, ROUND / TRUNCATE, POWER, ABS |
 
 ### 🧮 Algorithm
 > 추후 추가 예정
