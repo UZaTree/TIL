@@ -23,6 +23,8 @@
 | [SELECT 기본 문법](./sql/select-basics.md) | SELECT / FROM, WHERE (AND / OR / NOT / IN), ORDER BY |
 | [LIKE 패턴 검색](./sql/where-like.md) | %, _ 와일드카드, 성능 주의사항 |
 | [집계 함수](./sql/aggregate-functions.md) | MAX / MIN / AVG / SUM / COUNT, AS, DISTINCT, LIMIT |
+| [컬럼 연산](./sql/column-operations.md) | 숫자 사칙연산, 컬럼끼리 연산 |
+| [문자 함수](./sql/string-functions.md) | CONCAT, TRIM, REPLACE, SUBSTR, INSERT |
 
 ### 🧮 Algorithm
 > 추후 추가 예정
