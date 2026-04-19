@@ -20,7 +20,7 @@
 | 파일 | 내용 |
 |------|------|
 | [데이터 타입](./sql/data-types.md) | 문자형, 숫자형, 날짜형, CHAR vs VARCHAR |
-| [SELECT 기본 문법](./sql/select-basics.md) | SELECT / FROM, ORDER BY (ASC / DESC) |
+| [SELECT 기본 문법](./sql/select-basics.md) | SELECT / FROM, WHERE (AND / OR / NOT / IN), ORDER BY |
 
 ### 🧮 Algorithm
 > 추후 추가 예정
