@@ -1,6 +1,6 @@
 # 📖 TIL (Today I Learned)
 
-백준 풀이 및 개발 공부하면서 배운 내용을 정리합니다.
+CS, 개발, 보안, 인프라 공부하면서 배운 내용을 정리합니다.
 
 ---
 
@@ -20,12 +20,17 @@
 | 파일 | 내용 |
 |------|------|
 | [데이터 타입](./sql/data-types.md) | 문자형, 숫자형, 날짜형, CHAR vs VARCHAR |
-| [SELECT 기본 문법](./sql/select-basics.md) | SELECT / FROM, WHERE (AND / OR / NOT / IN), ORDER BY |
-| [LIKE 패턴 검색](./sql/where-like.md) | %, _ 와일드카드, 성능 주의사항 |
-| [집계 함수](./sql/aggregate-functions.md) | MAX / MIN / AVG / SUM / COUNT, AS, DISTINCT, LIMIT |
-| [컬럼 연산](./sql/column-operations.md) | 숫자 사칙연산, 컬럼끼리 연산 |
-| [문자 함수](./sql/string-functions.md) | CONCAT, TRIM, REPLACE, SUBSTR, INSERT |
-| [숫자 함수](./sql/numeric-functions.md) | GREATEST / LEAST, FLOOR / CEIL, ROUND / TRUNCATE, POWER, ABS |
+| [데이터 조회](./sql/select.md) | SELECT / FROM, WHERE (AND / OR / NOT / IN / LIKE), ORDER BY |
+| [함수](./sql/functions.md) | 집계 함수, 숫자·문자 함수, AS, DISTINCT |
+| [고급 조회](./sql/advanced-select.md) | GROUP BY / HAVING, 서브쿼리, IF / CASE |
+| [테이블 관리](./sql/table-management.md) | DDL (CREATE / DROP / ALTER), 제약조건 |
+
+### 🐧 Linux
+| 파일 | 내용 |
+|------|------|
+| [계정 관리](./linux/account-management.md) | 계정 종류, UID/GID, 그룹, root 계정 관리, su 명령어 |
+| [useradd 명령어](./linux/useradd.md) | 옵션 정리, 로그인 셸, 스켈레톤 디렉토리, 관련 파일 |
+| [디렉토리 구조](./linux/directory-structure.md) | 주요 디렉토리 역할, 홈 디렉토리 |
 
 ### 🧮 Algorithm
 > 추후 추가 예정
