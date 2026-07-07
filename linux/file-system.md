@@ -225,3 +225,221 @@ eject /dev/cdrom
 
 > `umount` = 안전하게 제거 버튼 (소프트웨어적 해제)
 > `eject` = 실제로 장치 꺼냄 (내부적으로 umount 먼저 수행)
+
+---
+
+## 12. parted
+
+fdisk보다 더 많은 기능을 제공하는 파티션 관리 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-h`, `--help` | 도움말 출력 |
+| `-l`, `--list` | 모든 디스크의 파티션 목록 출력 |
+
+### 실행 후 주요 명령어
+
+| 명령어 | 설명 |
+|---|---|
+| `help` | 도움말 출력 |
+| `print` | 현재 파티션 정보 출력 (파티션 번호 확인) |
+| `mklabel` | 디스크 레이블 생성 (msdos / gpt) |
+| `mkpart` | 파티션 생성 |
+| `rm` | 파티션 삭제 |
+| `resizepart` | 파티션 크기 변경 |
+| `quit` | 종료 |
+
+### mklabel 타입
+
+| 타입 | 설명 |
+|---|---|
+| `msdos` | 2TB 이하, 최대 4개 주 파티션 |
+| `gpt` | 2TB 이상, 파티션 수 제한 없음 |
+
+### mkpart 사용법
+
+```bash
+mkpart PART-TYPE [FS-TYPE] START END
+```
+
+| 항목 | 설명 |
+|---|---|
+| `PART-TYPE` | primary, extended, logical |
+| `FS-TYPE` | ext4, xfs 등 (생략 가능) |
+| `START` | 파티션 시작 위치 (물리적 위치) |
+| `END` | 파티션 끝 위치 (포함 안 됨) |
+
+### 파티션 종류
+
+| 종류 | 설명 |
+|---|---|
+| primary | 직접 사용 가능. 최대 4개 |
+| extended | primary 4개 제한 극복용. 데이터 저장 불가. 1개만 가능 |
+| logical | extended 안에 생성. 개수 제한 없음 |
+
+> 일반적으로 primary 3개 + extended 1개 조합 사용
+
+### resizepart 사용법
+
+```bash
+resizepart Number END
+# Number = 파티션 번호 (print로 확인)
+# END = 새로운 끝 지점
+```
+
+### fdisk vs parted
+
+| | fdisk | parted |
+|---|---|---|
+| 2TB 이상 | 불가 | 가능 |
+| 실시간 반영 | 재부팅 필요 | 즉시 반영 |
+
+---
+
+## 13. /etc/fstab 상세
+
+### 필드 구성
+
+```
+장치           마운트포인트   파일시스템   옵션      덤프  검사순서
+/dev/sdb1     /data         ext4        defaults   0     0
+LABEL=backup  /backup       xfs         defaults   0     0
+UUID=xxxx...  /home         ext4        defaults   0     0
+```
+
+> 최근 배포판은 장치명 대신 LABEL이나 UUID 사용 권장 (장치명은 상황에 따라 바뀔 수 있음)
+
+### 덤프 필드
+
+| 값 | 설명 |
+|---|---|
+| 0 | 덤프 사용 안 함 |
+| 1 | 매일 수행 |
+| 2 | 이틀에 한 번 수행 |
+
+### 검사순서 필드
+
+| 값 | 설명 |
+|---|---|
+| 0 | 검사 안 함 |
+| 1 | 루트 파일 시스템 |
+| 2 | 나머지 파일 시스템 |
+
+### 4번째 필드 주요 옵션
+
+| 옵션 | 설명 |
+|---|---|
+| `defaults` | rw, suid, dev, exec, auto, nouser, async 적용 |
+| `auto` | 부팅 시 자동 마운트. `-a` 옵션으로도 마운트 가능 |
+| `noauto` | 부팅 시 자동 마운트 안 함. 명시적으로만 가능 |
+| `user` | 일반 사용자도 마운트 가능 |
+| `owner` | 장치 소유자만 마운트 가능 |
+| `nofail` | 장치 없어도 오류 출력 안 함 |
+| `uquota, usrquota, quota` | 사용자별 용량 제한 |
+| `gquota, grpquota` | 그룹별 용량 제한 |
+| `noquota` | quota 사용 안 함 |
+| `nosuid` | SUID, SGID 사용 불허 |
+| `nodev` | 특별한 장치 허용 안 함 |
+| `noexec` | 실행 파일 실행 불허 |
+| `suid` | SUID, SGID 허용 |
+| `ro` | 읽기 전용 |
+| `rw` | 읽기/쓰기 |
+| `async` | 파일 비동기적으로 관리 |
+| `acl` | Access Control Lists 사용 |
+
+> fstab 변경 후 `systemctl daemon-reload` 실행 필요
+
+### /etc/mtab
+현재 마운트된 파일 시스템 현황 파일 (시스템이 자동 관리, 직접 편집 안 함)
+
+> fstab = 마운트할 목록 (설정), mtab = 현재 마운트된 목록 (현황)
+
+---
+
+## 14. 파티션/파일시스템 관련 유틸리티
+
+### udevadm settle
+커널이 새 파티션을 인식할 때까지 대기
+
+```bash
+udevadm settle
+```
+
+### cat /proc/partitions
+커널이 현재 인식하고 있는 모든 파티션 목록 출력
+
+```bash
+cat /proc/partitions
+```
+
+> `/proc` = 커널이 실시간으로 만들어주는 가상 파일 디렉토리
+
+### blkid
+블록 장치의 UUID, 라벨 등 정보 출력
+
+```bash
+blkid                    # 전체 블록 장치 정보
+blkid -L backup          # backup 라벨을 가진 장치명 출력
+blkid -U xxxx-xxxx       # 해당 UUID를 가진 장치명 출력
+```
+
+### lsblk
+블록 장치 목록을 트리 형태로 출력
+
+```bash
+lsblk        # 트리 출력
+lsblk -f     # 파일시스템 정보 포함 (UUID, 라벨)
+lsblk -m     # 소유자, 권한 정보 포함
+lsblk -o NAME,SIZE,FSTYPE  # 원하는 컬럼만 출력
+```
+
+### findfs
+라벨이나 UUID로 장치를 찾는 명령어
+
+```bash
+findfs LABEL=backup
+findfs UUID=xxxx-xxxx
+```
+
+### findmnt
+마운트된 파일 시스템을 찾아서 출력
+
+```bash
+findmnt              # 트리 형태 출력
+findmnt -D           # 디스크 사용량 포함 출력
+findmnt -s           # fstab 기준으로 출력
+findmnt -t xfs       # xfs만 출력
+findmnt -l           # 목록 형태로 출력
+```
+
+---
+
+## 15. fsck / e2fsck
+
+### fsck
+파일 시스템 검사 및 복구 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-r` | 명령 수행 확인 질문 (병렬 모드 시 유용) |
+| `-A` | fstab 등록된 전체 검사 (루트 먼저, 나머지 병렬) |
+| `-P` | `-A` 사용 시 루트도 병렬로 검사 |
+| `-R` | `-A` 사용 시 루트 검사 건너뜀 |
+| `-N` | 실제 실행 않고 작업 내용만 출력 (dry-run) |
+| `-T` | 시작 시 타이틀 출력 안 함 |
+| `-s` | 순차적으로 검사 (병렬 비활성화) |
+| `-V` | 상세 정보 출력 |
+| `-t fs_type` | 특정 파일 시스템만 검사 |
+
+> 마운트된 상태에서 실행 위험. 언마운트 후 실행
+> XFS는 fsck 사용 불가 → xfs_repair 사용
+
+### e2fsck
+ext2/3/4 전용 검사 및 복구 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-n` | 모든 질문에 자동으로 no (읽기 전용 검사) |
+| `-y` | 모든 질문에 자동으로 yes |
+| `-c` | 배드블록 검사 후 목록 업데이트 |
+| `-f` | 정상이어도 강제 검사 |
