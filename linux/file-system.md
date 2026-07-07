@@ -443,3 +443,344 @@ ext2/3/4 전용 검사 및 복구 명령어
 | `-y` | 모든 질문에 자동으로 yes |
 | `-c` | 배드블록 검사 후 목록 업데이트 |
 | `-f` | 정상이어도 강제 검사 |
+
+---
+
+## 16. 스왑 (Swap)
+
+RAM이 부족할 때 디스크 일부를 임시 메모리로 사용하는 공간
+
+### mkswap
+스왑 공간을 만드는 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-c` | 배드블록 검사 후 스왑 공간 생성 |
+
+```bash
+mkswap /dev/sdb2        # 파티션을 스왑으로 설정
+mkswap /swapfile 1G     # 파일을 1GB 스왑으로 설정
+```
+
+### swapon
+스왑 공간을 활성화하는 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-a` | fstab에 등록된 모든 스왑 활성화 |
+| `-s` | 현재 스왑 사용 현황 출력 |
+
+### swapoff
+스왑 공간을 비활성화하는 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-a` | 모든 스왑 비활성화 |
+
+### fstab 등록
+```
+/dev/sdb2    swap    swap    defaults    0    0
+```
+> 마운트 포인트 자리에 `swap` 을 씀
+
+### 스왑 파일 생성 절차
+```bash
+dd if=/dev/zero of=/swapfile bs=1M count=1024   # 1GB 스왑 파일 생성
+mkswap /swapfile                                  # 스왑 파일 설정
+swapon /swapfile                                  # 활성화
+vi /etc/fstab                                     # fstab 등록
+/swapfile    swap    swap    defaults    0    0
+systemctl daemon-reload                           # fstab 적용
+```
+
+### 스왑 파티션 생성 절차
+```bash
+fdisk /dev/sdb      # n → t → 82 → w
+mkswap /dev/sdb2
+swapon /dev/sdb2
+vi /etc/fstab
+/dev/sdb2    swap    swap    defaults    0    0
+systemctl daemon-reload
+```
+
+---
+
+## 17. 쿼터 (Quota)
+
+디스크 사용량을 사용자/그룹별로 제한하는 기능
+
+### xfs_quota
+XFS 파일 시스템 쿼터 관리 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-x` | 전문가 모드 활성화 (쿼터 설정 변경 가능) |
+| `-c 명령어` | 명령어 직접 지정해서 실행 |
+
+### -c 주요 명령어
+
+| 명령어 | 설명 |
+|---|---|
+| `limit` | 쿼터 한도 설정 |
+| `bsoft` | 블록 소프트 한도 (초과 시 경고) |
+| `bhard` | 블록 하드 한도 (절대 초과 불가) |
+| `isoft` | inode 소프트 한도 |
+| `ihard` | inode 하드 한도 |
+| `-g` | 그룹 쿼터 설정 |
+| `-h` | 읽기 쉬운 단위로 출력 |
+
+### edquota
+vi 편집기로 쿼터를 설정하는 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-u 사용자명` | 사용자 쿼터 편집 |
+| `-g 그룹명` | 그룹 쿼터 편집 |
+| `-t` | 유예기간 편집 |
+| `-p 사용자명` | 특정 사용자 쿼터 설정을 다른 사용자에게 복사 |
+
+### setquota
+명령어 방식으로 쿼터를 설정하는 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `-u 사용자명` | 사용자 쿼터 설정 |
+| `-g 그룹명` | 그룹 쿼터 설정 |
+| `-t` | 유예기간 설정 |
+
+> edquota = vi 편집기 방식, setquota = 명령어 직접 입력 방식
+
+### repquota
+쿼터 사용 현황을 출력하는 명령어 (report + quota)
+
+| 옵션 | 설명 |
+|---|---|
+| `-a` | 모든 파일 시스템 쿼터 현황 출력 |
+| `-u` | 사용자별 쿼터 현황 출력 |
+| `-g` | 그룹별 쿼터 현황 출력 |
+
+### quota
+특정 사용자/그룹의 쿼터 사용량 확인
+
+| 옵션 | 설명 |
+|---|---|
+| `-u 사용자명` | 사용자 쿼터 확인 |
+| `-g 그룹명` | 그룹 쿼터 확인 |
+| `-h` | 읽기 쉬운 단위로 출력 |
+
+> repquota = 전체 현황, quota = 특정 사용자/그룹
+
+### 사용자 쿼터 설정 절차
+```bash
+# 1. fstab 설정
+vi /etc/fstab
+/dev/sdb1    /home    xfs    defaults,uquota    0    0
+
+# 2. /home 다시 마운팅
+umount /home
+mount -o uquota /dev/sdb1 /home
+# 또는
+mount -a
+
+# 3. 적용 확인
+findmnt /home
+
+# 4. 쿼터 설정
+xfs_quota -x -c 'limit bsoft=1g bhard=2g jiwon' /home
+# 또는
+edquota -u jiwon
+
+# 5. 확인
+quota -uh jiwon
+repquota -u /home
+```
+
+### 그룹 쿼터 설정 절차
+```bash
+# 1. fstab 설정
+vi /etc/fstab
+/dev/sdb1    /home    xfs    defaults,gquota    0    0
+
+# 2. /home 다시 마운팅
+umount /home
+mount -o gquota /dev/sdb1 /home
+# 또는
+mount -a
+
+# 3. 적용 확인
+findmnt /home
+
+# 4. 쿼터 설정
+xfs_quota -x -c 'limit -g bsoft=1g bhard=2g dev' /home
+# 또는
+edquota -g dev
+
+# 5. 확인
+repquota -g /home
+```
+
+---
+
+## 18. 기타 명령어
+
+### dd
+파일이나 장치를 블록 단위로 복사/변환하는 명령어
+
+| 옵션 | 설명 |
+|---|---|
+| `if=파일명` | 입력 파일 (input file) |
+| `of=파일명` | 출력 파일 (output file) |
+| `bs=크기` | 블록 크기 (클수록 빠름) |
+| `count=숫자` | 복사할 블록 수 (`bs` 와 함께 사용) |
+| `skip=숫자` | 입력 파일에서 건너뛸 블록 수 |
+| `oflag=direct` | 버퍼 캐시 없이 직접 I/O (안정적) |
+| `conv=noerror` | 오류 발생해도 계속 진행 |
+| `conv=ucase` | 소문자를 대문자로 변환 |
+| `conv=lcase` | 대문자를 소문자로 변환 |
+
+```bash
+dd if=/dev/sda of=/dev/sdb              # 디스크 전체 복사
+dd if=/dev/sda of=backup.img            # 이미지 파일로 백업
+dd if=/dev/zero of=/dev/sdb bs=512      # 디스크 초기화
+dd if=/dev/zero of=/swapfile bs=1M count=1024  # 스왑 파일 생성
+```
+
+### dd 사용 경우
+1. 텍스트 파일 대/소문자 전환
+2. 부팅/설치 디스크 생성 (RHEL 4 이후 미사용)
+3. 디스크/파티션 단위 백업
+4. 스왑 파일 생성
+5. 디스크 초기화 (RAID, LVM 오류 시 유용)
+
+### partprobe
+파티션 테이블 변경사항을 커널에 반영 (재부팅 없이)
+
+| 옵션 | 설명 |
+|---|---|
+| `-d` | 테스트만 수행 |
+| `-s` | 파티션 정보 출력 |
+
+### stat
+파일이나 파일 시스템의 상세 정보 출력
+
+| 옵션 | 설명 |
+|---|---|
+| `-f` | 파일 시스템 정보 출력 |
+| `-L` | 심볼릭 링크 원본 파일 정보 출력 |
+| `--printf=형식` | 출력 형식 직접 지정 |
+
+### df
+파일 시스템 디스크 사용량 출력
+
+| 옵션 | 설명 |
+|---|---|
+| `-h` | 읽기 쉬운 단위 (1K=1024) |
+| `-H` | 읽기 쉬운 단위 (1K=1000) |
+| `-k` | KB 단위 |
+| `-m` | MB 단위 |
+| `-T` | 파일 시스템 유형 포함 출력 |
+| `-i` | inode 사용량 출력 |
+
+### du
+특정 디렉토리/파일 사용량 출력
+
+| 옵션 | 설명 |
+|---|---|
+| `-h` | 읽기 쉬운 단위 |
+| `-b` | 바이트 단위 |
+| `-k` | KB 단위 |
+| `-m` | MB 단위 |
+| `-a` | 파일도 모두 출력 |
+| `-s` | 합계만 출력 |
+| `--inodes` | inode 사용량 출력 |
+
+> df = 파일시스템 전체 용량, du = 특정 디렉토리/파일 용량
+
+### xfs_repair
+XFS 파일 시스템 검사 및 복구
+
+| 옵션 | 설명 |
+|---|---|
+| `-n` | 검사만 수행 (수정 안 함) |
+| `-L` | 로그 강제 초기화 (최후의 수단) |
+| `-v` | 상세 정보 출력 |
+| `-V` | 버전 출력 |
+
+---
+
+## 19. 파일시스템 관리와 복구 전체 흐름
+
+### 1. 디스크 인식 확인
+```bash
+fdisk -l                    # 전체 디스크 목록 확인
+cat /proc/partitions        # 커널 인식 파티션 확인
+lsblk                       # 블록 장치 트리 확인
+```
+
+### 2. 파티션 작업
+```bash
+# fdisk 방식 (2TB 이하)
+fdisk /dev/sdb
+# n → 파티션 생성, t → 타입 변경, w → 저장
+
+# parted 방식 (2TB 이상)
+parted /dev/sdb
+# mklabel gpt → mkpart primary xfs 1MiB 100GiB → quit
+```
+
+### 3. 커널 반영
+```bash
+partprobe /dev/sdb          # 재부팅 없이 커널에 반영
+udevadm settle              # 커널 인식 대기
+cat /proc/partitions        # 반영 확인
+```
+
+### 4. 파일 시스템 생성
+```bash
+mkfs.xfs /dev/sdb1          # xfs로 포맷
+mke2fs -t ext4 /dev/sdb1    # ext4로 포맷
+```
+
+### 5. 마운트 포인트 생성 및 마운트
+```bash
+mkdir /backup
+mount -t xfs /dev/sdb1 /backup
+mount | grep /backup
+```
+
+### 6. 용량 확인
+```bash
+df -h                       # 전체 파일 시스템 사용량
+df -hT                      # 파일 시스템 유형 포함
+du -sh /backup              # /backup 사용량 확인
+```
+
+### 7. fstab 등록 및 적용
+```bash
+vi /etc/fstab
+# /dev/sdb1    /backup    xfs    defaults    0    0
+systemctl daemon-reload
+mount -a
+```
+
+### 8. 파일 시스템 검사 및 복구
+```bash
+umount /backup
+
+# ext 계열
+e2fsck /dev/sdb1
+e2fsck -y /dev/sdb1
+
+# xfs
+xfs_repair /dev/sdb1
+xfs_repair -n /dev/sdb1     # 검사만
+```
+
+### 9. 스왑 설정
+```bash
+mkswap /dev/sdb2
+swapon /dev/sdb2
+swapon -s
+vi /etc/fstab
+# /dev/sdb2    swap    swap    defaults    0    0
+```
