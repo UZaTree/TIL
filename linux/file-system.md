@@ -301,7 +301,7 @@ resizepart Number END
 ### 필드 구성
 
 ```
-장치           마운트포인트   파일시스템   옵션      덤프  검사순서
+장치           마운트포인트   파일시스템        옵션      덤프  검사순서
 /dev/sdb1     /data         ext4        defaults   0     0
 LABEL=backup  /backup       xfs         defaults   0     0
 UUID=xxxx...  /home         ext4        defaults   0     0
