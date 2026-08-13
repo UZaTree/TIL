@@ -9,5 +9,5 @@
 | 파일 권한 및 링크 | [file-commands.md](./file-commands.md) | chmod, chown, chgrp, umask, ln, cp |
 | 파일 관리 | [file-management-commands.md](./file-management-commands.md) | pwd, cd, mkdir, rmdir, tree, ls, cp, rm, mv, touch, file, locate, find, cat, head, tail, more, less, grep, wc, sort, cut, split, tr, sed, awk |
 | 프로세스 관리 | [process-commands.md](./process-commands.md) | at, cron, crontab, ps, pstree, top, kill, killall, jobs, fg, bg, nice, renice, nohup, pidof, pgrep, pkill |
-| 소프트웨어 관리 | [rpm-commands.md](./rpm-commands.md) | rpm, rpmbuild |
+| 소프트웨어 설치 및 관리 | [software-commands.md](./software-commands.md) | rpm, rpmbuild, dnf, yum, apt 등 |
 | 네트워크 | 추후 추가 예정 | ifconfig, netstat |
