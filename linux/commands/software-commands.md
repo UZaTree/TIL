@@ -98,3 +98,40 @@ rpmbuild --rebuild 패키지.src.rpm
 | 옵션 | 설명 |
 |---|---|
 | `--rebuild` | 소스 RPM을 재빌드하여 바이너리 RPM 생성 |
+
+## DNF 사용법
+
+### 기본 사용법
+
+dnf [option] [command] [패키지_파일명]
+
+### 주요 옵션
+
+| 옵션 | 설명 |
+|---|---|
+| `-y`, `--assumeyes` | 모든 질문에 자동으로 `yes`로 응답 |
+| `-q`, `--quiet` | 최소한의 정보만 출력 |
+| `-v`, `--verbose` | 자세한 정보 출력 |
+| `--enablerepo=<repoid>` | 지정한 저장소를 일시적으로 활성화 |
+
+### 주요 명령어
+
+| 명령어 | 설명 |
+|---|---|
+| `list [--항목값]` | 패키지 목록 출력 |
+| `info [패키지명]` | 패키지 정보 출력 |
+| `check-update` | 업데이트 가능한 패키지 확인 |
+| `upgrade [패키지명]` | 패키지 업그레이드 |
+| `install [패키지명]` | 패키지 설치 |
+| `search [문자열...]` | 패키지 검색 |
+| `remove 패키지명` | 패키지 제거 |
+| `group list` | 패키지 그룹 목록 출력 |
+| `group info 패키지그룹명` | 패키지 그룹 정보 출력 |
+| `group upgrade 패키지그룹명` | 패키지 그룹 업그레이드 |
+| `group install 패키지그룹명` | 패키지 그룹 설치 |
+| `group remove 패키지그룹명` | 패키지 그룹 제거 |
+| `whatprovides` | 특정 기능이나 파일을 제공하는 패키지 검색 |
+| `clean [값]` | DNF 캐시 데이터 삭제 |
+| `history [sub-command]` | DNF 작업 이력 확인 및 관리 |
+| `repolist` | 활성화된 저장소 목록 출력 |
+| `config-manager` | DNF 저장소 및 설정 관리 |

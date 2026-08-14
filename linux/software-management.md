@@ -235,3 +235,48 @@ RPM의 주요 기능은 다음 5가지 모드로 구분한다.
 > - `rpm` → RPM 패키지 **관리**
 > - `rpmbuild` → RPM 패키지 **빌드**
 > - `rpmbuild --rebuild` → **소스 RPM(`.src.rpm`)을 다시 빌드하여 바이너리 RPM 생성**
+
+## DNF
+
+DNF(Dandified YUM)은 RPM 패키지를 관리하기 위한 패키지 관리 도구이다.
+
+YUM을 대체하는 차세대 패키지 관리 도구로, 패키지의 설치, 삭제, 업데이트 및 의존성 해결 등의 기능을 제공한다.
+
+### DNF 관련 파일 및 디렉터리
+
+| 파일/디렉터리 | 설명 |
+|---|---|
+| `/etc/dnf/dnf.conf` | DNF의 기본 설정 파일 |
+| `/etc/yum.repos.d/` | DNF 저장소(Repository) 설정 파일이 위치하는 디렉터리 |
+| `/var/cache/dnf/` | DNF가 사용하는 패키지 및 저장소 관련 캐시가 저장되는 디렉터리 |
+| `/var/log/dnf.log` | DNF 작업 관련 로그 파일 |
+
+### Rocky Linux 8 주요 저장소 파일
+
+| 파일 | 설명 |
+|---|---|
+| `Rocky-BaseOS.repo` | Rocky Linux의 기본 운영체제 패키지 저장소 |
+| `Rocky-AppStream.repo` | 애플리케이션 및 사용자 공간 패키지 저장소 |
+| `Rocky-Extras.repo` | 기본 저장소에 포함되지 않는 추가 패키지 저장소 |
+| `Rocky-PowerTools.repo` | 개발 및 추가 기능 등에 필요한 패키지 저장소 |
+
+### 저장소 설정 파일의 주요 항목
+
+저장소 설정은 `/etc/yum.repos.d/` 아래의 `.repo` 파일에 작성한다.
+
+| 항목 | 설명 |
+|---|---|
+| `name` | 저장소의 이름 |
+| `baseurl` | 패키지를 가져올 저장소의 기본 URL |
+| `mirrorlist` | 여러 미러 저장소의 목록을 제공하는 URL |
+| `gpgcheck` | 패키지의 GPG 서명 검사를 활성화할지 여부 |
+| `gpgkey` | 패키지의 GPG 서명을 검증하는 데 사용하는 키의 위치 |
+| `enabled` | 해당 저장소를 활성화할지 여부 (`1`: 활성화, `0`: 비활성화) |
+
+> **시험 포인트**
+>
+> - `baseurl` → 실제 패키지 저장소의 URL
+> - `mirrorlist` → 미러 저장소 목록을 제공하는 URL
+> - `gpgcheck` → GPG 서명 검사 여부
+> - `gpgkey` → GPG 검증에 사용하는 키
+> - `enabled` → 저장소 활성화 여부
