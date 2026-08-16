@@ -280,3 +280,49 @@ YUM을 대체하는 차세대 패키지 관리 도구로, 패키지의 설치, �
 > - `gpgcheck` → GPG 서명 검사 여부
 > - `gpgkey` → GPG 검증에 사용하는 키
 > - `enabled` → 저장소 활성화 여부
+
+## Debian 패키지 관리
+
+Debian 계열은 `.deb` 패키지를 사용하며, 주요 패키지 관리 도구로 `dpkg`, `apt-get`, `apt` 등을 사용한다.
+
+### Debian 패키지 파일명
+
+Debian 패키지 파일은 일반적으로 다음과 같은 형식으로 구성된다.
+
+`패키지이름_버전-릴리즈-아키텍처.deb`
+
+예:
+
+`nginx_1.18.0-6.1+deb11u3_amd64.deb`
+
+| 구성 요소 | 설명 | 예시 |
+|---|---|---|
+| 패키지이름 | 패키지의 이름 | `nginx` |
+| 버전 | 패키지 자체의 버전 | `1.18.0` |
+| 릴리즈 | 해당 패키지의 배포/수정 버전 | `6.1+deb11u3` |
+| 아키텍처 | 패키지가 실행될 CPU 아키텍처 | `amd64` |
+| `.deb` | Debian 패키지 파일임을 나타내는 확장자 | `.deb` |
+
+## Red Hat 계열과 Debian 계열 비교
+
+| 구분 | Red Hat 계열 | Debian 계열 |
+|---|---|---|
+| 대표 배포판 | RHEL, Rocky Linux, CentOS, Fedora | Debian, Ubuntu, Linux Mint |
+| 패키지 형식 | `.rpm` | `.deb` |
+| 저수준 패키지 관리 | `rpm` | `dpkg` |
+| 상위 패키지 관리 | `yum`, `dnf` | `apt`, `apt-get` |
+| 패키지 정보 조회 | `rpm -q` | `dpkg -s`, `apt show` |
+| 패키지 파일 정보 조회 | `rpm -qpi` | `dpkg -I` |
+| 패키지 파일 목록 조회 | `rpm -qpl` | `dpkg -c` |
+| 패키지 설치 | `rpm -i`, `dnf install` | `dpkg -i`, `apt install` |
+| 패키지 제거 | `rpm -e`, `dnf remove` | `dpkg -r`, `apt remove` |
+| 설정 파일까지 제거 | `rpm -e` 등 | `dpkg -P`, `apt purge` |
+| 저장소 패키지 목록 갱신 | `dnf check-update` 등 | `apt update` |
+| 패키지 업그레이드 | `dnf upgrade` | `apt upgrade` |
+
+> **시험 포인트**
+>
+> - **Red Hat 계열** → `.rpm` → `rpm` → `yum` / `dnf`
+> - **Debian 계열** → `.deb` → `dpkg` → `apt` / `apt-get`
+> - `rpm`과 `dpkg` → 패키지를 직접 관리하는 저수준 도구
+> - `dnf`/`yum`과 `apt`/`apt-get` → 저장소와 의존성을 관리하는 상위 패키지 관리 도구
