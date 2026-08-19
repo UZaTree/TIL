@@ -159,3 +159,62 @@
 
 - `blkid -L`
   - 파일 시스템의 LABEL을 이용하여 해당 장치명을 출력한다.
+
+  - `rpm -qpl package.rpm` → RPM 패키지 파일에 포함된 파일 목록 출력
+  - `-q` → Query(질의)
+  - `-p` → RPM 패키지 파일을 대상으로 질의
+  - `-l` → List(파일 목록)
+
+- `rpmbuild --rebuild package.src.rpm` → 소스 RPM(`.src.rpm`)을 재빌드하여 바이너리 RPM 생성
+  - `rpmbuild` → RPM 패키지 빌드
+  - `--rebuild` → 소스 RPM 재빌드
+
+- `apt-cache depends 패키지명` → 해당 패키지가 의존하는 패키지 출력
+- `apt-cache rdepends 패키지명` → 해당 패키지에 의존하는 패키지 출력
+  - `depends` → 정방향 의존성
+  - `rdepends` → 역방향 의존성(Reverse Depends)
+
+- `/var/cache/apt/archives/` → APT가 다운로드한 `.deb` 패키지 파일의 캐시 디렉터리
+  - `apt-get clean` → 해당 캐시의 다운로드된 패키지 파일을 삭제
+
+  - `rpm -qpi package.rpm` → RPM 패키지 파일의 상세 정보 출력
+  - `-q` → Query(질의)
+  - `-p` → RPM 패키지 파일을 대상으로 질의
+  - `-i` → Information(상세 정보)
+  - `rpm -i`에서 `-i`는 Install(설치)이지만, `-qpi`에서는 Information을 의미함
+
+- `rpm -qf /usr/bin/foo` → `/usr/bin/foo` 파일을 설치한 패키지 확인
+  - `-q` → Query(질의)
+  - `-f` → File(파일)을 기준으로 질의
+  - `rpm -qf 파일명` → 해당 파일이 어떤 패키지에 속해 있는지 확인
+
+  - `ls -Z` → SELinux 보안 문맥(Security Context) 출력
+  - `ls -i` → inode 번호 출력
+  - `ls -l` → 상세 정보(Long Format) 출력
+  - `ls -h` → 파일 크기를 사람이 읽기 쉬운 단위로 표시
+  - `ls -lh` → 상세 정보 + 사람이 읽기 쉬운 파일 크기 표시
+  - `ls -Z` → SELinux 보안 문맥 출력
+
+- `chmod` → 파일 및 디렉터리의 허가권(권한) 변경
+- `chown` → 파일 및 디렉터리의 소유자 변경
+- `chgrp` → 파일 및 디렉터리의 소유 그룹 변경
+- `usermod` → 사용자 계정 속성 변경
+  - `usermod`는 디렉터리의 소유자를 변경하는 명령어가 아님
+
+- `remove` → 설치된 패키지 제거
+- `purge` → 설치된 패키지와 설정 파일까지 제거
+- `clean` → 다운로드된 패키지 캐시 제거
+- `erase` → RPM에서 패키지 제거
+- `delete` → 현재 학습한 주요 패키지 관리 명령의 대표적인 제거 명령이 아님
+
+- `apt-get remove 패키지명` → 설치된 패키지를 제거하지만 다운로드된 `.deb` 캐시는 남을 수 있음
+- `apt-get clean` → `/var/cache/apt/archives/`에 저장된 다운로드된 `.deb` 패키지 캐시를 삭제
+- `/var/cache/apt/archives/` → APT가 다운로드한 `.deb` 패키지의 캐시 디렉터리
+- `dnf clean [값]` → DNF가 저장한 패키지 및 저장소 관련 캐시 삭제
+
+### 핵심 구분
+
+`remove`와 `clean`은 삭제 대상이 다르다.
+
+- `remove` → 설치된 패키지
+- `clean` → 다운로드된 패키지 캐시
