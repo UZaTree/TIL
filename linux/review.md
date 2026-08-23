@@ -218,3 +218,77 @@
 
 - `remove` → 설치된 패키지
 - `clean` → 다운로드된 패키지 캐시
+
+- `sed -f 파일명 대상파일` → 파일에 저장된 `sed` 명령어를 읽어 대상 파일에 적용
+
+- 예:
+  - `sedsrc` 파일에 `s/learning/study/g` 저장
+  - `sed -f sedsrc lin.txt` → `lin.txt`에 `s/learning/study/g` 명령 적용
+
+- `s/learning/study/g`
+  - `s` → substitute(치환)
+  - `learning` → 찾을 문자열
+  - `study` → 변경할 문자열
+  - `g` → 한 줄에서 일치하는 모든 문자열을 치환
+
+- `sed` → 스트림 편집기(Stream Editor)
+  - 텍스트 검색, 치환, 삭제, 출력 등에 사용
+
+  ## 필드 구분자 지정 옵션 정리
+
+| 명령어 | 구분자 지정 | 예시 | 의미 |
+|---|---|---|---|
+| `cut` | `-d` | `cut -d ':' -f 1 file` | `:`를 필드 구분자로 지정 |
+| `awk` | `-F` | `awk -F ':' '{print $1}' file` | `:`를 필드 구분자로 지정 |
+| `sort` | `-t` | `sort -t ':' -k 3 file` | `:`를 필드 구분자로 지정 |
+| `join` | `-t` | `join -t ':' file1 file2` | `:`를 필드 구분자로 지정 |
+| `paste` | `-d` | `paste -d ':' file1 file2` | `:`를 필드 구분자로 지정 |
+| `tr` | 별도 필드 구분자 옵션 없음 | `tr ':' ' '` | 문자를 변환하거나 삭제 |
+| `sed` | 별도 필드 구분자 옵션 없음 | `sed 's/:/ /g' file` | 문자열을 검색·치환·삭제 |
+
+### 자주 나오는 것만 암기
+
+- `cut` → `-d`
+- `awk` → `-F`
+- `sort` → `-t`
+- `join` → `-t`
+- `paste` → `-d`
+
+### 예시 비교
+
+`/etc/passwd`처럼 `:`로 필드가 구분된 파일을 기준으로 보면:
+
+`cut`
+
+    cut -d ':' -f 1 /etc/passwd
+
+→ `:`를 기준으로 **1번째 필드 추출**
+
+`awk`
+
+    awk -F ':' '{print $1}' /etc/passwd
+
+→ `:`를 기준으로 **1번째 필드 추출**
+
+`sort`
+
+    sort -t ':' -k 3 /etc/passwd
+
+→ `:`를 기준으로 **3번째 필드 정렬**
+
+### 핵심 암기
+
+    cut  → -d
+    awk  → -F
+    sort → -t
+    join → -t
+    paste → -d
+
+> **주의**
+>
+> `tr`과 `sed`는 필드 구분자를 지정해서 필드를 다루는 명령어가 아니다.
+>
+> - `tr` → 문자 단위 변환·삭제
+> - `sed` → 문자열 검색·치환·삭제·편집
+> - `cut` / `awk` → 필드 단위 처리
+> - `sort` / `join` → 필드를 기준으로 정렬·결합
