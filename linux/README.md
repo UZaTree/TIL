@@ -23,6 +23,7 @@
 | 파일 | 내용 |
 |------|------|
 | [장치의 설치 및 관리](./device-management/device-management.md) | 모듈, 커널, 커널 컴파일, Cleaning Targets, 커널 컴파일 도구 |
+| [주변 장치 설정](./device-management/peripheral-device-management.md) | 프린터, 사운드 카드, 스캐너, SSD, LVM, RAID |
 
 ### 명령어
 
