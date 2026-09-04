@@ -25,12 +25,19 @@
 | [장치의 설치 및 관리](./device-management/device-management.md) | 모듈, 커널, 커널 컴파일, Cleaning Targets, 커널 컴파일 도구 |
 | [주변 장치 설정](./device-management/peripheral-device-management.md) | 프린터, 사운드 카드, 스캐너, SSD, LVM, RAID |
 
+### 시스템 및 보안관리
+
+| 파일 | 내용 |
+|------|------|
+| [시스템 분석](./system-security-management/system-analysis.md) | 시스템 분석 관련 내용 |
+
 ### 명령어
 
 | 파일 | 내용 |
 |------|------|
 | [명령어](./general-management/commands/) | 사용자 관리, 사용자 정보 확인, 파일 권한 및 링크, 파일 관리 |
-| [장치 관리 명령어](./device-management/device-commands/) | lsmod, insmod, rmmod, modprobe, modinfo, depmod |
+| [장치 관리 명령어](./device-management/commands/) | 모듈, 프린터, 사운드 카드, 스캐너, LVM, RAID 관련 명령어 |
+| [시스템 및 보안관리 명령어](./system-security-management/commands/) | 시스템 및 보안관리 관련 명령어 |
 
 ## 🔄 복습
 
