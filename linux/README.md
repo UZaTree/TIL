@@ -29,7 +29,7 @@
 
 | 파일 | 내용 |
 |------|------|
-| [명령어](./commands/) | 사용자 관리, 사용자 정보 확인, 파일 권한 및 링크, 파일 관리 |
+| [명령어](./general-management/commands/) | 사용자 관리, 사용자 정보 확인, 파일 권한 및 링크, 파일 관리 |
 | [장치 관리 명령어](./device-management/device-commands/) | lsmod, insmod, rmmod, modprobe, modinfo, depmod |
 
 ## 🔄 복습
