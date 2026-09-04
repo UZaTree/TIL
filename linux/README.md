@@ -29,7 +29,8 @@
 
 | 파일 | 내용 |
 |------|------|
-| [시스템 분석](./system-security-management/system-analysis.md) | 시스템 분석 관련 내용 |
+| [시스템 분석](./system-security-management/system-analysis.md) | rsyslog, logrotate 및 시스템 로그 관리 |
+| [로그 관련 파일](./system-security-management/log-files.md) | 주요 로그 파일의 종류와 역할, xferlog 로그 포맷 |
 
 ### 명령어
 
@@ -38,6 +39,7 @@
 | [명령어](./general-management/commands/) | 사용자 관리, 사용자 정보 확인, 파일 권한 및 링크, 파일 관리 |
 | [장치 관리 명령어](./device-management/commands/) | 모듈, 프린터, 사운드 카드, 스캐너, LVM, RAID 관련 명령어 |
 | [시스템 및 보안관리 명령어](./system-security-management/commands/) | 시스템 및 보안관리 관련 명령어 |
+| [로그 관련 명령어](./system-security-management/commands/log-files-commands.md) | last, lastlog, lastb, dmesg, logger |
 
 ## 🔄 복습
 
